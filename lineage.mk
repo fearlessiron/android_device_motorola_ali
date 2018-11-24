@@ -14,21 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$(call inherit-product, device/motorola/addison/full_addison.mk)
+$(call inherit-product, device/motorola/ali/full_ali.mk)
 
 # Boot animation
 TARGET_SCREEN_WIDTH := 1080
 TARGET_SCREEN_HEIGHT := 1920
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := addison
-PRODUCT_NAME := lineage_addison
+PRODUCT_DEVICE := ali
+PRODUCT_NAME := lineage_ali
 PRODUCT_BRAND := motorola
+PRODUCT_MODEL := Moto G6
 PRODUCT_MANUFACTURER := motorola
-
-PRODUCT_SYSTEM_PROPERTY_BLACKLIST := ro.product.model
+PRODUCT_RELEASE_NAME := ali
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    BUILD_FINGERPRINT=motorola/addison/addison:7.1.1/NPNS26.118-22-1/1:user/release-keys \
-    PRIVATE_BUILD_DESC="addison-user 7.1.1 NPNS26.118-22-1 1 release-keys" \
-    PRODUCT_NAME="Moto Z Play"
+    PRIVATE_BUILD_DESC="ali-user 8.0.0 OPS27.82-87 108 release-keys" \
+    PRODUCT_NAME="ali"
+
+BUILD_FINGERPRINT=motorola/ali/ali:8.0.0/OPS27.82-87/108:user/release-keys

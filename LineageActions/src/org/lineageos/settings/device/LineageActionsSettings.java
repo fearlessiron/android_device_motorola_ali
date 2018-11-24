@@ -20,10 +20,11 @@ package org.lineageos.settings.device;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.UserHandle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 
-import android.util.Log;
+import com.android.internal.hardware.AmbientDisplayConfiguration;
 
 import org.lineageos.settings.device.actions.UpdatedStateNotifier;
 import org.lineageos.settings.device.actions.CameraActivationAction;
@@ -34,7 +35,6 @@ public class LineageActionsSettings {
 
     private static final String GESTURE_CAMERA_ACTION_KEY = "gesture_camera_action";
     private static final String GESTURE_CHOP_CHOP_KEY = "gesture_chop_chop";
-    private static final String GESTURE_PICK_UP_KEY = "gesture_pick_up";
     private static final String GESTURE_IR_WAKEUP_KEY = "gesture_hand_wave";
     private static final String GESTURE_IR_SILENCER_KEY = "gesture_ir_silencer";
     private static final String GESTURE_FLIP_TO_MUTE_KEY = "gesture_flip_to_mute";
@@ -42,10 +42,10 @@ public class LineageActionsSettings {
 
     private final Context mContext;
     private final UpdatedStateNotifier mUpdatedStateNotifier;
+    private AmbientDisplayConfiguration mAmbientDisplayConfiguration;
 
     private boolean mCameraGestureEnabled;
     private boolean mChopChopEnabled;
-    private boolean mPickUpGestureEnabled;
     private boolean mIrWakeUpEnabled;
     private boolean mIrSilencerEnabled;
     private boolean mFlipToMuteEnabled;
@@ -57,6 +57,7 @@ public class LineageActionsSettings {
         sharedPrefs.registerOnSharedPreferenceChangeListener(mPrefListener);
         mContext = context;
         mUpdatedStateNotifier = updatedStateNotifier;
+        mAmbientDisplayConfiguration = new AmbientDisplayConfiguration(context);
     }
 
     public boolean isCameraGestureEnabled() {
@@ -67,20 +68,16 @@ public class LineageActionsSettings {
         return mChopChopEnabled;
     }
 
-    public static boolean isDozeEnabled(ContentResolver contentResolver) {
-        return (Settings.Secure.getInt(contentResolver, Settings.Secure.DOZE_ENABLED, 1) != 0);
+    public boolean isAODEnabled() {
+        return mAmbientDisplayConfiguration.alwaysOnEnabled(UserHandle.USER_CURRENT);
     }
 
     public boolean isDozeEnabled() {
-        return isDozeEnabled(mContext.getContentResolver());
+        return mAmbientDisplayConfiguration.pulseOnNotificationEnabled(UserHandle.USER_CURRENT);
     }
 
     public boolean isIrWakeupEnabled() {
-        return isDozeEnabled() && mIrWakeUpEnabled;
-    }
-
-    public boolean isPickUpEnabled() {
-        return isDozeEnabled() && mPickUpGestureEnabled;
+        return (isPulseOnPickupEnabled() || isDozeEnabled()) && !isAODEnabled() && mIrWakeUpEnabled;
     }
 
     public boolean isIrSilencerEnabled() {
@@ -95,6 +92,12 @@ public class LineageActionsSettings {
         return mLiftToSilenceEnabled;
     }
 
+    public boolean isPulseOnPickupEnabled() {
+        return Settings.Secure.getIntForUser(mContext.getContentResolver(),
+            Settings.Secure.DOZE_PULSE_ON_PICK_UP, 1, UserHandle.USER_CURRENT) != 0
+                && mAmbientDisplayConfiguration.pulseOnPickupAvailable();
+    }
+
     public void cameraAction() {
         new CameraActivationAction(mContext).action();
     }
@@ -107,7 +110,6 @@ public class LineageActionsSettings {
         mCameraGestureEnabled = sharedPreferences.getBoolean(GESTURE_CAMERA_ACTION_KEY, true);
         mChopChopEnabled = sharedPreferences.getBoolean(GESTURE_CHOP_CHOP_KEY, true);
         mIrWakeUpEnabled = sharedPreferences.getBoolean(GESTURE_IR_WAKEUP_KEY, true);
-        mPickUpGestureEnabled = sharedPreferences.getBoolean(GESTURE_PICK_UP_KEY, true);
         mIrSilencerEnabled = sharedPreferences.getBoolean(GESTURE_IR_SILENCER_KEY, false);
         mFlipToMuteEnabled = sharedPreferences.getBoolean(GESTURE_FLIP_TO_MUTE_KEY, false);
         mLiftToSilenceEnabled = sharedPreferences.getBoolean(GESTURE_LIFT_TO_SILENCE_KEY, false);
@@ -125,8 +127,6 @@ public class LineageActionsSettings {
                 mChopChopEnabled = sharedPreferences.getBoolean(GESTURE_CHOP_CHOP_KEY, true);
             } else if (GESTURE_IR_WAKEUP_KEY.equals(key)) {
                 mIrWakeUpEnabled = sharedPreferences.getBoolean(GESTURE_IR_WAKEUP_KEY, true);
-            } else if (GESTURE_PICK_UP_KEY.equals(key)) {
-                mPickUpGestureEnabled = sharedPreferences.getBoolean(GESTURE_PICK_UP_KEY, true);
             } else if (GESTURE_IR_SILENCER_KEY.equals(key)) {
                 mIrSilencerEnabled = sharedPreferences.getBoolean(GESTURE_IR_SILENCER_KEY, false);
             } else if (GESTURE_FLIP_TO_MUTE_KEY.equals(key)) {
