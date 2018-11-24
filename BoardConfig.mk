@@ -124,6 +124,10 @@ TARGET_PROVIDES_LIBLIGHT := true
 # Media
 TARGET_USES_MEDIA_EXTENSIONS := true
 
+# Manifest
+DEVICE_MANIFEST_FILE := device/motorola/ali/manifest.xml
+DEVICE_MATRIX_FILE := device/motorola/ali/compatibility_matrix.xml
+
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 23068672        #    22528 * 1024 mmcblk0p36
