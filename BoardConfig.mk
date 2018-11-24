@@ -124,6 +124,10 @@ TARGET_PROVIDES_LIBLIGHT := true
 # Media
 TARGET_USES_MEDIA_EXTENSIONS := true
 
+# Manifest
+DEVICE_MANIFEST_FILE := device/motorola/ali/manifest.xml
+DEVICE_MATRIX_FILE := device/motorola/ali/compatibility_matrix.xml
+
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 23068672        #    22528 * 1024 mmcblk0p36
@@ -152,7 +156,7 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
 # Release Tools
-#TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
+TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
 
 # SELinux
 #include device/qcom/sepolicy/sepolicy.mk

@@ -21,12 +21,6 @@ def FullOTA_Assertions(info):
 def IncrementalOTA_Assertions(info):
   AddBootloaderAssertion(info, info.target_zip)
 
-def FullOTA_InstallEnd(info):
-  info.script.Print("Selecting NFC configuration...")
-  info.script.Mount("/system")
-  info.script.AppendExtra('run_program("/sbin/sh", "/tmp/install/bin/post_install.sh");')
-  info.script.Unmount("/system")
-
 def AddBootloaderAssertion(info, input_zip):
   android_info = input_zip.read("OTA/android-info.txt")
   m = re.search(r"require\s+version-bootloader\s*=\s*(\S+)", android_info)
