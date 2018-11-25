@@ -266,10 +266,12 @@ PRODUCT_PACKAGES += \
     init.mmi.usb.rc \
     init.qcom.rc \
     init.qcom.ril.sh \
-    ueventd.rc \
     wlan_carrier_bin.sh \
     init.recovery.qcom.rc \
     init.recovery.qcom.usb.rc
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/ueventd.qcom.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc
 
 # RIL
 PRODUCT_PACKAGES += \
