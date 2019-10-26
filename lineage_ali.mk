@@ -24,12 +24,12 @@ TARGET_SCREEN_HEIGHT := 1920
 PRODUCT_DEVICE := ali
 PRODUCT_NAME := lineage_ali
 PRODUCT_BRAND := motorola
-PRODUCT_MODEL := Moto G6
+PRODUCT_MODEL := moto g(6)
 PRODUCT_MANUFACTURER := motorola
 PRODUCT_RELEASE_NAME := ali
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="ali-user 8.0.0 OPS27.82-87 108 release-keys" \
+    PRIVATE_BUILD_DESC="ali-user 9.0.0 PPSS29.55-37-4-3 108 release-keys" \
     PRODUCT_NAME="ali"
 
-BUILD_FINGERPRINT=motorola/ali/ali:8.0.0/OPS27.82-87/108:user/release-keys
+BUILD_FINGERPRINT=motorola/ali/ali:9.0.0/PPSS29.55-37-4-3/108:user/release-keys
